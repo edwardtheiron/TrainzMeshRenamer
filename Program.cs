@@ -1,4 +1,4 @@
-﻿// For Directory.GetFiles and Directory.GetDirectories
+// For Directory.GetFiles and Directory.GetDirectories
 // For File.Exists, Directory.Exists
 using System;
 using System.IO;
@@ -54,6 +54,26 @@ public class RecursiveFileProcessor
         {
             //Console.WriteLine("lodtemplate entered ");
             lodtemplate[i] = "_" + Convert.ToString(i) + ".obj";
+
+            switch(i)
+            {
+                case 1:
+                    lodprefix[i] = "1_0032_";
+                    break;
+                case 2:
+                    lodprefix[i] = "2_0064_";
+                    break;
+                case 3:
+                    lodprefix[i] = "3_0256_";
+                    break;
+                case 4:
+                    lodprefix[i] = "4_1024_";
+                    break;
+                default:
+                    break;
+            }
+
+            /*
             if (i * 32 < 100)
             {
                 lodprefix[i] = i + "_00" + (i * 32).ToString() + "_";
@@ -62,6 +82,7 @@ public class RecursiveFileProcessor
             {
                 lodprefix[i] = i + "_0" + (i * 32).ToString() + "_";
             }
+            */
         }
 
         // main thing here
@@ -73,9 +94,13 @@ public class RecursiveFileProcessor
                 string[] cut = fileName.Split(lodtemplate[i]); // cuts _i.obj
                 //Console.WriteLine(Path.GetFullPath(path));
                 //Console.WriteLine(" \n" + lodprefix[i] + cut[0] + " \n");
-                if (File.Exists(path))
+                if (File.Exists(Path.GetDirectoryName(path) + "\\" + lodprefix[i] + cut[0] + ".obj"))
                 {
-                    File.Move(path, Path.GetDirectoryName(path) + "\\" + lodprefix[i] + cut[0]); // actual renaming
+                    Console.WriteLine("File {0} already exists!", lodprefix[i] + cut[0] + ".obj");
+                }
+                else if (File.Exists(path))
+                {
+                    File.Move(path, Path.GetDirectoryName(path) + "\\" + lodprefix[i] + cut[0] + ".obj"); // actual renaming
                 }
                 else
                 {
